@@ -1,9 +1,12 @@
 const express = require("express");
+const cors = require("cors");
 const { Pool } = require("pg");
 require("dotenv").config();
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+app.use(cors());
 
 
 // Connect to Heroku Postgres
@@ -18,6 +21,7 @@ app.get("/api/random-user", async (req, res) => {
     if (result.rows.length === 0) {
       return res.status(404).json({ error: "No users found" });
     }
+    res.setHeader("Content-Type", "application/json");
     res.json(result.rows[0]);
   } catch (err) {
     console.error(err);
